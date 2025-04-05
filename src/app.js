@@ -40,9 +40,7 @@ app.get('/health', (req, res) => {
 
 // Defining a root route
 app.get('/', (req, res) => {
-    res.status(httpStatusCode.OK).sendFile(
-        path.join(__dirname, './root-page/root.html')
-    );
+    res.status(httpStatusCode.OK).sendFile(path.join(__dirname, './root.html'));
 });
 
 // API routes
