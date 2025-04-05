@@ -5,6 +5,10 @@
  * will be used as a base class for other database classes (InMemory, MongoDB)
  */
 class BaseDatabase {
+    constructor(config, logger) {
+        this.config = config;
+        this.logger = logger;
+    }
     async connect() {
         throw new Error("Method 'connect()' must be implemented.");
     }

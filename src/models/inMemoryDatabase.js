@@ -2,9 +2,7 @@ const BaseDatabase = require('../interfaces/baseDatabase');
 
 class InMemoryDatabase extends BaseDatabase {
     constructor(config, logger) {
-        super();
-        this.config = config;
-        this.logger = logger;
+        super(config, logger);
     }
 
     async connect() {

@@ -3,9 +3,7 @@ const mongoose = require('mongoose');
 
 class MongoDatabase extends BaseDatabase {
     constructor(config, logger) {
-        super();
-        this.config = config;
-        this.logger = logger;
+        super(config, logger);
     }
 
     async connect() {

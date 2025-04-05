@@ -8,7 +8,7 @@ const config = {
     mongodb: {
         uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/mydatabase',
         options: {
-            dbName: 'AssignmentDB',
+            dbName: process.env.MONGODB_COLLECTION || 'mycollection',
         },
     },
     logging: {
