@@ -1,5 +1,5 @@
 # Messages-CRUD-RESTAPI
-
+> Live Demo: [Messages-CRUD-RESTAPI](https://messages-crud.up.railway.app/)
 ---
 ## Introduction
 
@@ -129,7 +129,7 @@ The project uses GitHub Actions for CI/CD. The workflow is defined in `.github/w
 ---
 ## Deployment
 The project is deployed on Railway Cloud Provider.
-<br>You can access the live API at [Messages-CRUD-RESTAPI](https://messages-api-production.up.railway.app/api/v1/messages).
+<br>You can access the live API at [Messages-CRUD-RESTAPI](https://messages-crud.up.railway.app/).
 <br>In order to deploy your own version:
 1. Create a new Railway project
 2. Connect your GitHub repository
