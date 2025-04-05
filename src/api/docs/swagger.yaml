@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: Palindrome Messages Checker API
+  version: 1.0.0
+  description: A RESTful API for managing messages and checking palindromes
+  contact:
+    name: API Support
+    email: galbitton22@gmail.com
+
+servers:
+  - url: /api/v1
+    description: Development server
+
+paths:
+  /messages:
+    get:
+      summary: Get all messages
+      tags: [Messages]
+      responses:
+        200:
+          description: List of all messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MessageResponse'
+
+    post:
+      summary: Create a new message
+      tags: [Messages]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageInput'
+      responses:
+        201:
+          description: Message created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MessageResponse'
+        400:
+          description: Invalid input
+
+  /messages/{id}:
+    get:
+      summary: Get a message by ID
+      tags: [Messages]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Message found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MessageResponse'
+        404:
+          description: Message not found
+
+    put:
+      summary: Update a message
+      tags: [Messages]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageInput'
+      responses:
+        200:
+          description: Message updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MessageResponse'
+        404:
+          description: Message not found
+
+    delete:
+      summary: Delete a message
+      tags: [Messages]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Message deleted successfully
+        404:
+          description: Message not found
+
+components:
+  schemas:
+    MessageInput:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          description: The content of the message
+
+    MessageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the message
+        content:
+          type: string
+          description: The content of the message
+        isPalindrome:
+          type: boolean
+          description: Boolean flag indicates if the message is a palindrome
+        creationTime:
+          type: string
+          description: The time when the message was created
+        lastUpdatedTime:
+          type: string
+          description: The last time when the message was updated
+
+    Error:
+      type: object
+      properties:
+        reason:
+          type: string
