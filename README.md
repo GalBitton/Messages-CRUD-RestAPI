@@ -50,7 +50,7 @@ Everything is built using a modular architecture. This means that the code is or
 ## Architecture
 As mentioned earlier, the project is built using a modular architecture.<br>
 In the picture below you can see the different layers of the application and how they interact with each other.
-![Architecture](https://raw.githubusercontent.com/GalBitton/Messages-CRUD-RestAPI/main/src/docs/architecture.jpg)
+![Architecture](/src/docs/architecture.jpg)
 
 ---
 ## Tech Stack
