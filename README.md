@@ -1,5 +1,7 @@
 # Messages-CRUD-RESTAPI
-> Live Demo: [Messages-CRUD-RESTAPI](https://messages-crud.up.railway.app/)
+> Visit **Root Page**: [Messages-CRUD-RESTAPI Root page](https://messages-crud.up.railway.app/)
+> 
+> Visit **Swagger API Docs**: [Messages-CRUD-RESTAPI Swagger API docs](https://messages-crud.up.railway.app/api-docs)
 ---
 ## Introduction
 
@@ -106,7 +108,24 @@ docker build -t messages-api .
 docker run -d -p 8080:8080 --env-file .env messages-api
 ```
 Open your browser and go to `http://localhost:8080` to see the API in action.
+<br> You can also use **Postman** or any other API testing tool to test the endpoints.
+for example:
+```bash
+# If you want to create a new message, use the following command:
+curl -X POST http://localhost:8080/api/v1/messages -H "Content-Type: application/json" -d '{"content": "your message"}'
 
+# To list all messages, use the following command:
+curl -X GET http://localhost:8080/api/v1/messages
+
+# To get a message by ID, use the following command:
+curl -X GET http://localhost:8080/api/v1/messages/<message-id>
+
+# To update a message, use the following command:
+curl -X PUT http://localhost:8080/api/v1/messages/<message-id> -H "Content-Type: application/json" -d '{"content": "your message"}'
+
+# To delete a message, use the following command:
+curl -X DELETE http://localhost:8080/api/v1/messages/<message-id>
+```
 ---
 ## API Endpoints
 All the endpoints are documented using Swagger. You can access the documentation at `http://localhost:8080/api-docs` after running the server.
@@ -234,12 +253,13 @@ Please create a `.env` file in the root directory with the following variables:
 ```env
 NODE_ENV=production
 PORT=8080
+ROUTE_URL=https://messages-crud.up.railway.app/
 MONGODB_URI=<your-mongodb-uri>
 MONGODB_COLLECTION=<your-collection-name>
 LOG_LEVEL=info
 LOG_CONSOLE=true
 LOG_FILE=true
-LOG_FILE_PATH=./logs/
+LOG_FILE_PATH=../../logs/
 DB_SETUP=mongoDB
 ```
 Note: The `MONGODB_URI` and `MONGODB_COLLECTION` variables are only needed if you are using MongoDB as your database. If you are using the in-memory database, you can just configure the DB_SETUP variable to `inMemoryDB`.

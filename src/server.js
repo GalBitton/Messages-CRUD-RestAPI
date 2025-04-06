@@ -21,8 +21,9 @@ process.on('uncaughtException', err => {
             logger.info(
                 `Server is running in mode ${config.env} on port ${config.port}`
             );
+            logger.info(`Root url is available at ${config.root}`);
             logger.info(
-                `Swagger documentation is available at http://localhost:${config.port}/api-docs`
+                `Swagger documentation is available at ${config.root}/api-docs`
             );
         });
 

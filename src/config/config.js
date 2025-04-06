@@ -5,6 +5,8 @@ const config = {
     env: process.env.NODE_ENV || 'development',
     dbSetup: process.env.DB_SETUP || 'inMemory',
     port: process.env.PORT || 8080,
+    root:
+        process.env.ROOT_URL || `http://localhost:${process.env.PORT || 8080}`,
     mongodb: {
         uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/mydatabase',
         options: {
