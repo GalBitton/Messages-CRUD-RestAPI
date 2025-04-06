@@ -24,6 +24,7 @@ Everything is built using a modular architecture. This means that the code is or
 - [Introduction](#introduction)
 - [Features](#features)
 - [Architecture](#architecture)
+- [Design Patterns](#design-patterns)
 - [Tech Stack](#tech-stack)
 - [How to Run](#how-to-run)
 - [API Endpoints](#api-endpoints)
@@ -51,6 +52,21 @@ Everything is built using a modular architecture. This means that the code is or
 As mentioned earlier, the project is built using a modular architecture.<br>
 In the picture below you can see the different layers of the application and how they interact with each other.
 ![Architecture](/src/docs/architecture.jpg)
+
+---
+## Design Patterns
+In this section, I will explain the design patterns used:
+- **Dependency Injection Pattern**<br>nstead of manually creating dependencies everywhere, the app uses the ```kontainer-di``` library ```(see src/container.js)``` to manage all dependencies in one place. This makes the code easier to test and keeps everything loosely coupled.
+- **Controller-Service-Repository Pattern**<br>Repository's layer is a (DAL - Data Access Layer), provides an additional layer to classic Controller-Service model as following:
+  - **Controller** - Handles incoming HTTP requests (e.g., from the client), and calls the relevant service.
+  - **Service** -  Contains the actual business logic (like creating a message or checking if it’s a palindrome), and creates the ```Message``` entity.
+  - **Repository** - Talks to the database. It abstracts how data is stored or retrieved, so the service doesn’t need to know which database is in use.
+- **Factory Pattern (via Container)** <br>Using the container, we can easily "swap" or create different object instances depending on the environment – for example, switching between a MongoDB connection or an In-Memory database. This gives flexibility without changing core logic.
+- **Base Class Pattern (Generic,Template methods)** <br>The project uses **base classes** to promote **code reuse** and enforce a **consistent structure** across layers.<br>These are similar to the **Template Method Pattern** in design:
+  - ```BaseRepository```: Provides shared CRUD operations (```create```,```findAll```,```findById```,```update```,```delete```). The ```MessageRepository``` simply extends it and passes in the correct ```database``` and ```schema```.
+  - ```BaseCrudService```: Encapsulates common service-level logic. ```MessageService``` inherits it and overrides only what’s necessary (like the ```create``` and ```update``` methods to handle Message entity logic).
+  - ```BaseSchema```: A key abstraction for different data storage schemas.
+  - ```BaseController``` and ```BaseDatabase``` also serve as a foundational layers for extension.
 
 ---
 ## Tech Stack
