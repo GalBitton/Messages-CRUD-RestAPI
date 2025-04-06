@@ -131,13 +131,25 @@ Each message is an object with the following structure:
 ```
 ---
 ## Testing
-```bash
-npm test          #Run all tests
-```
-Tests includes:
-- Unit tests (inMemoryDatabase,messageEntity,messageRepository,messageService,palindromeChecker)
-- Integration tests (messageRoutes)
+The project includes both **unit** and **integration** tests, covering:
 
+- **Integration Tests**:
+  - Full CRUD flow on message routes (`POST`, `GET`, `PUT`, `DELETE`)
+- **Unit Tests**:
+  - `InMemoryDatabase`: create, read, update, delete, edge cases
+  - `Message Entity`: validation, update logic, palindrome detection
+  - `MessageRepository`: correct interactions with the database
+  - `MessageService`: business logic and error handling
+  - `Palindrome Checker`: case sensitivity, numbers, edge cases
+
+✔ All tests are written using **Mocha**, **Chai**, **Sinon**, and **Supertest**
+
+✔ Test runner outputs:  
+```bash
+> npm test
+
+41 passing ✔
+```
 ---
 ## CI/CD
 The project uses GitHub Actions for CI/CD. The workflow is defined in `.github/workflows/ci.yml`.
