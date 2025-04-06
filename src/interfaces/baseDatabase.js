@@ -1,6 +1,6 @@
 // baseDatabase.js
 
-/*
+/**
  * BaseDatabase Abstract class
  * This class defines the interface for all database CRUD operations.
  * It should be extended by any concrete database implementation, modularizing the code.

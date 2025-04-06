@@ -2,7 +2,7 @@
 
 const httpStatus = require('http-status-codes');
 
-/*
+/**
  * BaseController class provides generic common CRUD operations for any resource.
  * This class uses a service layer to interact with the database.
  */

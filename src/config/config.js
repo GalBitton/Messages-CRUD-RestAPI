@@ -3,7 +3,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
-/*
+/**
  * Configuration file for the application.
  * Load environment variables from a .env file and sets default values as needed.
  */

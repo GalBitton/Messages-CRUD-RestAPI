@@ -39,7 +39,7 @@ class MessageInMemorySchema extends BaseSchema {
 
     /**
      * Retrieves all messages from the InMemory database.
-     * @returns {Promise<[]>} - An array of all message objects
+     * @returns {Promise<Object[]>} - An array of all message objects
      */
     async getAll() {
         return this.messages;

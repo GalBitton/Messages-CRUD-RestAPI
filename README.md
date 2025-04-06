@@ -126,6 +126,14 @@ curl -X PUT http://localhost:8080/api/v1/messages/<message-id> -H "Content-Type:
 # To delete a message, use the following command:
 curl -X DELETE http://localhost:8080/api/v1/messages/<message-id>
 ```
+### Generating JSdoc
+To generate the documentation, run the following command:
+```bash
+npm run docs
+# You can find the generated documentation in the src/docs folder.
+# Open the index.html file in your browser to view the documentation for better readability and understanding.
+```
+
 ---
 ## API Endpoints
 All the endpoints are documented using Swagger. You can access the documentation at `http://localhost:8080/api-docs` after running the server.
