@@ -1,14 +1,18 @@
 const { expect } = require('chai');
 const InMemoryDatabase = require('../../src/models/inMemoryDatabase');
 const MessageInMemorySchema = require('../../src/models/messageInMemorySchema');
+const sinon = require('sinon');
 
 describe('InMemoryDatabase', () => {
     let db;
     let schema;
-
+    const mockLogger = {
+        info: sinon.stub(),
+        error: sinon.stub(),
+    };
     beforeEach(() => {
-        db = new InMemoryDatabase({}, console);
-        schema = new MessageInMemorySchema();
+        db = new InMemoryDatabase({}, mockLogger);
+        schema = new MessageInMemorySchema(mockLogger);
     });
 
     it('should initialize the database with an empty data object', async () => {

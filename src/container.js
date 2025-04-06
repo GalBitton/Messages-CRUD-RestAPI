@@ -14,22 +14,22 @@ const MessageController = require('./controllers/messageController');
 // Register common dependencies for all environments
 Container.register('config', [], config);
 Container.register('logger', [], Logger);
-Container.register('messageMongoSchema', [], MessageMongoSchema);
-Container.register('messageInMemorySchema', [], MessageInMemorySchema);
+Container.register('messageMongoSchema', ['logger'], MessageMongoSchema);
+Container.register('messageInMemorySchema', ['logger'], MessageInMemorySchema);
 
 // Register database dependencies based on the database setup
 if (config.dbSetup === 'mongoDB') {
     Container.register('database', ['config', 'logger'], MongoDatabase);
     Container.register(
         'messageRepository',
-        ['database', 'messageMongoSchema'],
+        ['database', 'messageMongoSchema', 'logger'],
         MessageRepository
     );
 } else {
     Container.register('database', ['config', 'logger'], InMemoryDatabase);
     Container.register(
         'messageRepository',
-        ['database', 'messageInMemorySchema'],
+        ['database', 'messageInMemorySchema', 'logger'],
         MessageRepository
     );
 }
@@ -42,7 +42,11 @@ Container.register(
 );
 
 // Register controllers
-Container.register('messageController', ['messageService'], MessageController);
+Container.register(
+    'messageController',
+    ['messageService', 'logger'],
+    MessageController
+);
 
 // Export the container
 module.exports = Container;

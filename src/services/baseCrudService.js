@@ -15,7 +15,7 @@ class BaseCrudService {
      * @returns {Promise<*>} - An array of all records.
      */
     async findAll() {
-        this.logger.info(`Service ${this.serviceName} find all`);
+        this.logger.info(`${this.serviceName}: find all`);
         return this.repository.findAll();
     }
 
@@ -25,7 +25,7 @@ class BaseCrudService {
      * @returns {Promise<*>} - The found record.
      */
     async findById(id) {
-        this.logger.info(`Service ${this.serviceName} find by id ${id}`);
+        this.logger.info(`${this.serviceName}: find by id ${id}`);
         return this.repository.findById(id);
     }
 
@@ -35,7 +35,7 @@ class BaseCrudService {
      * @returns {Promise<data>} - The created record.
      */
     async create(data) {
-        this.logger.info(`Service ${this.serviceName} create`);
+        this.logger.info(`${this.serviceName}: create`);
         return this.repository.create(data);
     }
 
@@ -46,7 +46,7 @@ class BaseCrudService {
      * @returns {Promise<*>} - The updated record.
      */
     async update(id, data) {
-        this.logger.info(`Service ${this.serviceName} update ${id}`);
+        this.logger.info(`${this.serviceName}: update ${id}`);
         return this.repository.update(id, data);
     }
 
@@ -56,7 +56,7 @@ class BaseCrudService {
      * @returns {Promise<*>} - The deleted record.
      */
     async delete(id) {
-        this.logger.info(`Service ${this.serviceName} delete ${id}`);
+        this.logger.info(`${this.serviceName}: delete ${id}`);
         return this.repository.delete(id);
     }
 }

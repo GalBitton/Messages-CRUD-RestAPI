@@ -6,7 +6,8 @@
  * It should be extended by any concrete database implementation, modularizing the code.
  */
 class BaseDatabase {
-    constructor(config, logger) {
+    constructor(dbName, config, logger) {
+        this.dbName = dbName;
         this.config = config;
         this.logger = logger;
     }

@@ -12,7 +12,11 @@ describe('MessageRepository', () => {
     };
 
     const schema = {};
-    const repository = new MessageRepository(mockDB, schema);
+    const mockLogger = {
+        info: sinon.stub(),
+        error: sinon.stub(),
+    };
+    const repository = new MessageRepository(mockDB, schema, mockLogger);
 
     it('should call db.create with the correct parameters and return result', async () => {
         const message = { id: '1', content: 'test' };

@@ -6,8 +6,8 @@ const BaseSchema = require('../interfaces/baseSchema');
  * Used as the schema for InMemory database, mimicking the behavior of a real database.
  */
 class MessageInMemorySchema extends BaseSchema {
-    constructor() {
-        super('Message InMemory Schema');
+    constructor(logger) {
+        super('Message InMemory Schema', logger);
         this.messages = [];
     }
 
@@ -17,6 +17,7 @@ class MessageInMemorySchema extends BaseSchema {
      * @returns {Promise<{Object}>} - The created message object
      */
     async create(data) {
+        this.logger.info(`${this.schemaName}: Creating new message`);
         const message = {
             id: data.id,
             content: data.content,
@@ -25,6 +26,9 @@ class MessageInMemorySchema extends BaseSchema {
             lastUpdatedTime: new Date(),
         };
         this.messages.push(message);
+        this.logger.info(
+            `${this.schemaName}: Message ${message.content} created with id: ${message.id} successfully`
+        );
         return message;
     }
 
@@ -34,7 +38,18 @@ class MessageInMemorySchema extends BaseSchema {
      * @returns {Promise<*>} - The found message object or null if not found
      */
     async getById(id) {
-        return this.messages.find(message => message.id === id);
+        this.logger.info(`${this.schemaName}: Finding message with id: ${id}`);
+        const message = this.messages.find(message => message.id === id);
+        if (!message) {
+            this.logger.error(
+                `${this.schemaName}: Message with id: ${id} not found`
+            );
+            return null;
+        }
+        this.logger.info(
+            `${this.schemaName}: Message with id: ${id} found successfully`
+        );
+        return message;
     }
 
     /**
@@ -42,6 +57,12 @@ class MessageInMemorySchema extends BaseSchema {
      * @returns {Promise<Object[]>} - An array of all message objects
      */
     async getAll() {
+        this.logger.info(`${this.schemaName}: Finding all messages`);
+        if (this.messages.length === 0) {
+            this.logger.error(`${this.schemaName}: No messages found`);
+            return [];
+        }
+        this.logger.info(`${this.schemaName}: Messages found successfully`);
         return this.messages;
     }
 
@@ -52,12 +73,21 @@ class MessageInMemorySchema extends BaseSchema {
      * @returns {Promise<*|null>} - The updated message object or null if not found
      */
     async update(id, data) {
+        this.logger.info(
+            `${this.schemaName}: Updating message with id: ${id} to ${data.content}`
+        );
         const messageIndex = this.messages.findIndex(
             message => message.id === id
         );
         if (messageIndex === -1) {
+            this.logger.error(
+                `${this.schemaName}: Message with id: ${id} not found`
+            );
             return null;
         }
+        this.logger.info(
+            `${this.schemaName}: Message with id: ${id} found and updated successfully to ${data.content}`
+        );
         this.messages[messageIndex].content = data.content;
         this.messages[messageIndex].isPalindrome =
             require('../utils/palindromeChecker')(data.content);
@@ -71,10 +101,17 @@ class MessageInMemorySchema extends BaseSchema {
      * @returns {Promise<*|null>} - The deleted message object or null if not found
      */
     async delete(id) {
+        this.logger.info(`${this.schemaName}: Deleting message with id: ${id}`);
         const index = this.messages.findIndex(message => message.id === id);
         if (index === -1) {
+            this.logger.error(
+                `${this.schemaName}: Message with id: ${id} not found`
+            );
             return null;
         }
+        this.logger.info(
+            `${this.schemaName}: Message with id: ${id} found and deleted successfully`
+        );
         return this.messages.splice(index, 1)[0];
     }
 }

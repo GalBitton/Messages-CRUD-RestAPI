@@ -8,8 +8,8 @@ const checkIfPalindrome = require('../utils/palindromeChecker');
  * This class uses Mongoose to interact with the MongoDB database.
  */
 class MessageMongoSchema extends BaseSchema {
-    constructor() {
-        super('Message Mongo Schema');
+    constructor(logger) {
+        super('Message Mongo Schema', logger);
         // Define the schema for the Message model
         this.schema = new mongoose.Schema(
             {
@@ -53,7 +53,19 @@ class MessageMongoSchema extends BaseSchema {
      * @returns {Promise<(Object)>} - The created message object
      */
     async create(data) {
+        this.logger.info(
+            `${this.schemaName}: Creating new message with id ${data.id} and content ${data.content}`
+        );
         const doc = await this.model.create(data);
+        if (!doc) {
+            this.logger.error(
+                `${this.schemaName}: Failed to create message with id ${data.id}`
+            );
+            throw new Error(`${this.schemaName}: Failed to create message`);
+        }
+        this.logger.info(
+            `${this.schemaName}: Message with id ${data.id} and content ${data.content} created successfully`
+        );
         return doc;
     }
 
@@ -63,10 +75,19 @@ class MessageMongoSchema extends BaseSchema {
      * @returns {Promise<(Object)>} - The found message object or null if not found
      */
     async getById(id) {
+        this.logger.info(`${this.schemaName}: Finding message with id ${id}`);
         const doc = await this.model.findOne({ id: id });
         if (!doc) {
-            throw new Error(`Message with id ${id} not found`);
+            this.logger.error(
+                `${this.schemaName}: Message with id ${id} not found`
+            );
+            throw new Error(
+                `${this.schemaName}: Message with id ${id} not found`
+            );
         }
+        this.logger.info(
+            `${this.schemaName}: Message with id ${id} found successfully`
+        );
         return doc;
     }
 
@@ -75,7 +96,13 @@ class MessageMongoSchema extends BaseSchema {
      * @returns {Promise<(Object)>} - An array of all message objects
      */
     async getAll() {
+        this.logger.info(`${this.schemaName}: Finding all messages`);
         const docs = await this.model.find();
+        if (!docs || docs.length === 0) {
+            this.logger.error(`${this.schemaName}: No messages found`);
+            throw new Error(`${this.schemaName}: No messages found`);
+        }
+        this.logger.info(`${this.schemaName}: Messages found successfully`);
         return docs;
     }
 
@@ -95,14 +122,25 @@ class MessageMongoSchema extends BaseSchema {
             isPalindrome,
             lastUpdatedTime: new Date().toISOString(),
         };
+        this.logger.info(
+            `${this.schemaName}: Updating message with id ${id} in MongoDB with new content ${data.content}`
+        );
         // Update the message in the database
         const doc = await this.model.findOneAndUpdate({ id: id }, updatedData, {
             new: true,
             runValidators: true,
         });
         if (!doc) {
-            throw new Error(`Message with id ${id} not found`);
+            this.logger.error(
+                `${this.schemaName}: Message with id ${id} not found`
+            );
+            throw new Error(
+                `${this.schemaName}: Message with id ${id} not found`
+            );
         }
+        this.logger.info(
+            `${this.schemaName}: Message with id ${id} updated successfully`
+        );
         return doc;
     }
 
@@ -112,10 +150,19 @@ class MessageMongoSchema extends BaseSchema {
      * @returns {Promise<(Object)>} - The deleted message object or null if not found
      */
     async delete(id) {
+        this.logger.info(`${this.schemaName}: Deleting message with id ${id}`);
         const doc = await this.model.findOneAndDelete({ id: id });
         if (!doc) {
-            throw new Error(`Message with id ${id} not found`);
+            this.logger.error(
+                `${this.schemaName}: Message with id ${id} not found`
+            );
+            throw new Error(
+                `${this.schemaName}: Message with id ${id} not found`
+            );
         }
+        this.logger.info(
+            `${this.schemaName}: Message with id ${id} deleted successfully`
+        );
         return doc;
     }
 }

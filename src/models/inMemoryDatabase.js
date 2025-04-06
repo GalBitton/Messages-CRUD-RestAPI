@@ -8,7 +8,7 @@ const BaseDatabase = require('../interfaces/baseDatabase');
  */
 class InMemoryDatabase extends BaseDatabase {
     constructor(config, logger) {
-        super(config, logger);
+        super('InMemoryDatabase', config, logger);
     }
 
     /**
@@ -16,7 +16,7 @@ class InMemoryDatabase extends BaseDatabase {
      * @returns {Promise<void>}
      */
     async connect() {
-        this.logger.info('InMemoryDatabase connected');
+        this.logger.info(`${this.dbName}: connected`);
     }
 
     /**
@@ -24,7 +24,7 @@ class InMemoryDatabase extends BaseDatabase {
      * @returns {Promise<void>}
      */
     async disconnect() {
-        this.logger.info('InMemoryDatabase disconnected');
+        this.logger.info(`${this.dbName}: disconnected`);
     }
 
     /**
@@ -34,9 +34,13 @@ class InMemoryDatabase extends BaseDatabase {
      * @returns {Promise<*>} - The created document
      */
     async create(data, schema) {
-        this.logger.info('Creating new record in InMemoryDatabase');
+        this.logger.info(
+            `${this.dbName}: Creating new record with content: ${data.content}`
+        );
         const document = await schema.create(data);
-        this.logger.info(`Record created: ${JSON.stringify(document)}`);
+        this.logger.info(
+            `${this.dbName}: Record created successfully with ID: ${document.id}`
+        );
         return document;
     }
 
@@ -47,13 +51,17 @@ class InMemoryDatabase extends BaseDatabase {
      * @returns {Promise<*|null>} - The found document or null if not found
      */
     async findById(id, schema) {
-        this.logger.info(`Finding record with ID: ${id}`);
+        this.logger.info(`${this.dbName}: Finding record with id: ${id}`);
         const document = await schema.getById(id);
         if (!document) {
-            this.logger.error(`Record with ID: ${id} not found`);
+            this.logger.error(
+                `${this.dbName}: Record with id: ${id} not found`
+            );
             return null;
         }
-        this.logger.info(`Record found: ${JSON.stringify(document)}`);
+        this.logger.info(
+            `${this.dbName}: Record with id: ${id} found successfully`
+        );
         return document;
     }
 
@@ -63,8 +71,13 @@ class InMemoryDatabase extends BaseDatabase {
      * @returns {Promise<*>} - The found documents
      */
     async findAll(schema) {
-        this.logger.info(`Finding all records in InMemoryDatabase`);
+        this.logger.info(`${this.dbName}: Finding all records`);
         const documents = await schema.getAll();
+        if (!documents || documents.length === 0) {
+            this.logger.error(`${this.dbName}: No records found`);
+            return [];
+        }
+        this.logger.info(`${this.dbName}: Records found successfully`);
         return documents;
     }
 
@@ -76,13 +89,17 @@ class InMemoryDatabase extends BaseDatabase {
      * @returns {Promise<*|null>} - The updated document or null if not found
      */
     async update(id, data, schema) {
-        this.logger.info(`Updating record with ID: ${id}`);
+        this.logger.info(`${this.dbName}: Updating record with ID: ${id}`);
         const document = await schema.update(id, data);
         if (!document) {
-            this.logger.error(`Record with ID: ${id} not found`);
+            this.logger.error(
+                `${this.dbName}: Record with ID: ${id} not found`
+            );
             return null;
         }
-        this.logger.info(`Record updated: ${JSON.stringify(document)}`);
+        this.logger.info(
+            `${this.dbName}: Record with id ${id} updated successfully to ${document.content}`
+        );
         return document;
     }
 
@@ -93,13 +110,17 @@ class InMemoryDatabase extends BaseDatabase {
      * @returns {Promise<*|null>} - The deleted document or null if not found
      */
     async delete(id, schema) {
-        this.logger.info(`Deleting record with ID: ${id}`);
+        this.logger.info(`${this.dbName}: Deleting record with ID: ${id}`);
         const document = await schema.delete(id);
         if (!document) {
-            this.logger.error(`Record with ID: ${id} not found`);
+            this.logger.error(
+                `${this.dbName}: Record with ID: ${id} not found`
+            );
             return null;
         }
-        this.logger.info(`Record deleted: ${JSON.stringify(document)}`);
+        this.logger.info(
+            `${this.dbName}: Record with id ${id} deleted successfully`
+        );
         return document;
     }
 }

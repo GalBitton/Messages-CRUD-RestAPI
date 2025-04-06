@@ -7,8 +7,8 @@ const BaseController = require('./baseController');
  * This class uses the MessageService to interact with the database.
  */
 class MessageController extends BaseController {
-    constructor(messageService) {
-        super(messageService);
+    constructor(messageService, logger) {
+        super('MessageController', messageService, logger);
     }
 }
 

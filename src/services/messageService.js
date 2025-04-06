@@ -17,7 +17,7 @@ class MessageService extends BaseCrudService {
      * @returns {Promise<newMessage>}
      */
     async create(data) {
-        this.logger.info(`Service: ${this.serviceName} - create message`);
+        this.logger.info(`${this.serviceName}: create message`);
         const newMessage = new Message(data.content);
         return this.repository.create(newMessage);
     }

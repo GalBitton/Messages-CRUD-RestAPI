@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
  */
 class MongoDatabase extends BaseDatabase {
     constructor(config, logger) {
-        super(config, logger);
+        super('MongoDatabase', config, logger);
     }
 
     /**
@@ -16,17 +16,21 @@ class MongoDatabase extends BaseDatabase {
      */
     async connect() {
         try {
-            this.logger.info('Connecting to MongoDB...');
+            this.logger.info(`${this.dbName}: Connecting to database ...`);
             await mongoose.connect(
                 this.config.mongodb.uri,
                 this.config.mongodb.options
             );
             this.logger.info(
-                `Connected to MongoDB: ${mongoose.connection.host}`
+                `${this.dbName}: Connected successfully to: ${mongoose.connection.host}`
             );
         } catch (err) {
-            this.logger.error(`Error connecting to MongoDB: ${err.message}`);
-            throw new Error(`Error connecting to MongoDB: ${err.message}`);
+            this.logger.error(
+                `${this.dbName}: Error connecting to database: ${err.message}`
+            );
+            throw new Error(
+                `${this.dbName}: Error connecting to database: ${err.message}`
+            );
         }
     }
 
@@ -35,14 +39,16 @@ class MongoDatabase extends BaseDatabase {
      */
     async disconnect() {
         try {
-            this.logger.info('Disconnecting from MongoDB...');
+            this.logger.info(`${this.dbName}: Disconnecting from database ...`);
             await mongoose.connection.close();
-            this.logger.info('Disconnected from MongoDB');
+            this.logger.info(`${this.dbName}: Disconnected from database`);
         } catch (err) {
             this.logger.error(
-                `Error disconnecting from MongoDB: ${err.message}`
+                `${this.dbName}: Error disconnecting from database: ${err.message}`
             );
-            throw new Error(`Error disconnecting from MongoDB: ${err.message}`);
+            throw new Error(
+                `${this.dbName}: Error disconnecting from database: ${err.message}`
+            );
         }
     }
 
@@ -54,13 +60,21 @@ class MongoDatabase extends BaseDatabase {
      */
     async create(data, schema) {
         try {
-            this.logger.info(`Creating document in ${schema.schemaName}`);
+            this.logger.info(
+                `${this.dbName}: Creating document in ${schema.schemaName}`
+            );
             const document = await schema.create(data);
-            this.logger.info(`Document created: ${document}`);
+            this.logger.info(
+                `${this.dbName}: Document created with id: ${document.id} and content: ${document.content}`
+            );
             return document;
         } catch (err) {
-            this.logger.error(`Error creating document: ${err.message}`);
-            throw new Error(`Error creating document: ${err.message}`);
+            this.logger.error(
+                `${this.dbName}: Error creating document: ${err.message}`
+            );
+            throw new Error(
+                `${this.dbName}: Error creating document: ${err.message}`
+            );
         }
     }
 
@@ -72,18 +86,24 @@ class MongoDatabase extends BaseDatabase {
      */
     async findById(id, schema) {
         try {
-            this.logger.info(`Finding document by id: ${id}`);
+            this.logger.info(`${this.dbName}: Finding document by id: ${id}`);
             const document = await schema.getById(id);
             if (!document) {
-                throw new Error(`Document not found with id: ${id}`);
+                throw new Error(
+                    `${this.dbName}: Document not found with id: ${id}`
+                );
             }
             this.logger.info(
-                `Document with id ${document.id} and content ${document.content} found`
+                `${this.dbName}: Document with id ${document.id} and content ${document.content} found`
             );
             return document;
         } catch (err) {
-            this.logger.error(`Error finding document by id: ${err.message}`);
-            throw new Error(`Error finding document by id: ${err.message}`);
+            this.logger.error(
+                `${this.dbName}: Error finding document by id: ${err.message}`
+            );
+            throw new Error(
+                `${this.dbName}: Error finding document by id: ${err.message}`
+            );
         }
     }
 
@@ -94,13 +114,19 @@ class MongoDatabase extends BaseDatabase {
      */
     async findAll(schema) {
         try {
-            this.logger.info(`Finding all documents in ${schema.schemaName}`);
+            this.logger.info(
+                `${this.dbName}: Finding all documents in ${schema.schemaName}`
+            );
             const documents = await schema.getAll();
-            this.logger.info(`Documents found`);
+            this.logger.info(`${this.dbName}: Documents found`);
             return documents;
         } catch (err) {
-            this.logger.error(`Error finding all documents: ${err.message}`);
-            throw new Error(`Error finding all documents: ${err.message}`);
+            this.logger.error(
+                `${this.dbName}: Error finding all documents: ${err.message}`
+            );
+            throw new Error(
+                `${this.dbName}: Error finding all documents: ${err.message}`
+            );
         }
     }
 
@@ -113,21 +139,32 @@ class MongoDatabase extends BaseDatabase {
      */
     async update(id, data, schema) {
         try {
-            this.logger.info(`Updating document with id: ${id}`);
+            this.logger.info(
+                `${this.dbName}: Updating document with id: ${id} to ${data.content}`
+            );
             const document = await schema.update(id, data, {
                 new: true,
                 runValidators: true,
             });
             if (!document) {
-                throw new Error(`Document not found with id: ${id}`);
+                this.logger.error(
+                    `${this.dbName}: Document with id ${id} not found`
+                );
+                throw new Error(
+                    `${this.dbName}: Document not found with id: ${id}`
+                );
             }
             this.logger.info(
-                `Document with id ${document.id} content updated to: ${document.content}`
+                `${this.dbName}: Document with id ${document.id} content updated to: ${document.content}`
             );
             return document;
         } catch (err) {
-            this.logger.error(`Error updating document: ${err.message}`);
-            throw new Error(`Error updating document: ${err.message}`);
+            this.logger.error(
+                `${this.dbName}: Error updating document: ${err.message}`
+            );
+            throw new Error(
+                `${this.dbName}: Error updating document: ${err.message}`
+            );
         }
     }
 
@@ -139,18 +176,26 @@ class MongoDatabase extends BaseDatabase {
      */
     async delete(id, schema) {
         try {
-            this.logger.info(`Deleting document with id: ${id}`);
+            this.logger.info(
+                `${this.dbName}: Deleting document with id: ${id}`
+            );
             const document = await schema.delete(id);
             if (!document) {
-                throw new Error(`Document not found with id: ${id}`);
+                throw new Error(
+                    `${this.dbName}: Document not found with id: ${id}`
+                );
             }
             this.logger.info(
-                `Document with content ${document.content} deleted`
+                `${this.dbName}: Document with content ${document.content} deleted`
             );
             return document;
         } catch (err) {
-            this.logger.error(`Error deleting document: ${err.message}`);
-            throw new Error(`Error deleting document: ${err.message}`);
+            this.logger.error(
+                `${this.dbName}: Error deleting document: ${err.message}`
+            );
+            throw new Error(
+                `${this.dbName}: Error deleting document: ${err.message}`
+            );
         }
     }
 }

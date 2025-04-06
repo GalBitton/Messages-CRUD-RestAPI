@@ -14,17 +14,17 @@ const database = container.get('database');
 
         const server = app.listen(config.port, () => {
             logger.info(
-                `Server is running in mode ${config.env} on port ${config.port}`
+                `Server: Server is running in mode ${config.env} on port ${config.port}`
             );
-            logger.info(`Root url is available at ${config.root}`);
+            logger.info(`Server: Root url is available at ${config.root}`);
             logger.info(
-                `Swagger documentation is available at ${config.root}/api-docs`
+                `Server: Swagger documentation is available at ${config.root}/api-docs`
             );
         });
 
         // Handle unexpected exceptions
         process.on('uncaughtException', err => {
-            logger.error('Uncaught Exception!!! Server is going down');
+            logger.error('Server: Uncaught Exception!!! Server is going down');
             logger.error(err.name, err.message);
             server.close(async () => {
                 await database.disconnect();
@@ -34,7 +34,7 @@ const database = container.get('database');
 
         // Handle unhandled rejections
         process.on('unhandledRejection', err => {
-            logger.error('Unhandled Rejection!!! Shutting down...');
+            logger.error('Server: Unhandled Rejection!!! Shutting down...');
             logger.error(err.name, err.message);
             server.close(async () => {
                 await database.disconnect();
@@ -44,7 +44,7 @@ const database = container.get('database');
 
         // Handle SIGTERM signal
         process.on('SIGTERM', () => {
-            logger.info('SIGTERM signal received: closing HTTP server');
+            logger.info('Server: SIGTERM signal received: closing HTTP server');
             server.close(async () => {
                 await database.disconnect();
                 logger.info('HTTP server closed, Server terminated...');

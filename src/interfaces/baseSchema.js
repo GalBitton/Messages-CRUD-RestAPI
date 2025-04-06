@@ -6,8 +6,9 @@
  * It should be extended by any concrete database schema, modularizing the code.
  */
 class BaseSchema {
-    constructor(schemaName) {
+    constructor(schemaName, logger) {
         this.schemaName = schemaName;
+        this.logger = logger;
     }
     async create(data) {
         throw new Error('Method create() not implemented');
