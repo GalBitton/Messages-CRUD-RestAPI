@@ -56,7 +56,7 @@ In the picture below you can see the different layers of the application and how
 ---
 ## Design Patterns
 In this section, I will explain the design patterns used:
-- **Dependency Injection Pattern**<br>nstead of manually creating dependencies everywhere, the app uses the ```kontainer-di``` library ```(see src/container.js)``` to manage all dependencies in one place. This makes the code easier to test and keeps everything loosely coupled.
+- **Dependency Injection Pattern**<br>Instead of manually creating dependencies everywhere, the app uses the ```kontainer-di``` library ```(see src/container.js)``` to manage all dependencies in one place. This makes the code easier to test and keeps everything loosely coupled.
 - **Controller-Service-Repository Pattern**<br>Repository's layer is a (DAL - Data Access Layer), provides an additional layer to classic Controller-Service model as following:
   - **Controller** - Handles incoming HTTP requests (e.g., from the client), and calls the relevant service.
   - **Service** -  Contains the actual business logic (like creating a message or checking if it’s a palindrome), and creates the ```Message``` entity.
