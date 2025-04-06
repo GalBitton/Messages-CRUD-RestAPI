@@ -31,6 +31,7 @@ Everything is built using a modular architecture. This means that the code is or
 - [How to Run](#how-to-run)
 - [API Endpoints](#api-endpoints)
 - [Testing](#testing)
+- [CLI Tool](#cli-tool)
 - [CI/CD](#cicd)
 - [Deployment](#deployment)
 - [Project Structure](#project-structure)
@@ -178,6 +179,20 @@ The project includes both **unit** and **integration** tests, covering:
 41 passing ✔
 ```
 ---
+## CLI Tool
+You can interact with the API using a CLI tool.<br>
+You can find the CLI tool in the following repository: [Messages-CRUD-RestAPI CLI](https://github.com/GalBitton/Messages-CRUD-CLI)<br>
+There you can find the instructions on how to use it.
+In short, **Clone the repository**:
+```bash
+>git clone https://github.com/GalBitton/Messages-CRUD-CLI.git
+cd message-cli
+npm install
+
+# Start using the CLI tool (read the README file inside the CLI repository for more details):
+````
+---
+
 ## CI/CD
 The project uses GitHub Actions for CI/CD. The workflow is defined in `.github/workflows/ci.yml`.
 <br>It runs on every push to the main branch and on every pull request.
