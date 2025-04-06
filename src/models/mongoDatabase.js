@@ -15,41 +15,23 @@ class MongoDatabase extends BaseDatabase {
      * Connect to the MongoDB database.
      */
     async connect() {
-        try {
-            this.logger.info(`${this.dbName}: Connecting to database ...`);
-            await mongoose.connect(
-                this.config.mongodb.uri,
-                this.config.mongodb.options
-            );
-            this.logger.info(
-                `${this.dbName}: Connected successfully to: ${mongoose.connection.host}`
-            );
-        } catch (err) {
-            this.logger.error(
-                `${this.dbName}: Error connecting to database: ${err.message}`
-            );
-            throw new Error(
-                `${this.dbName}: Error connecting to database: ${err.message}`
-            );
-        }
+        this.logger.info(`${this.dbName}: Connecting to database ...`);
+        await mongoose.connect(
+            this.config.mongodb.uri,
+            this.config.mongodb.options
+        );
+        this.logger.info(
+            `${this.dbName}: Connected successfully to: ${mongoose.connection.host}`
+        );
     }
 
     /**
      * Disconnect from the MongoDB database.
      */
     async disconnect() {
-        try {
-            this.logger.info(`${this.dbName}: Disconnecting from database ...`);
-            await mongoose.connection.close();
-            this.logger.info(`${this.dbName}: Disconnected from database`);
-        } catch (err) {
-            this.logger.error(
-                `${this.dbName}: Error disconnecting from database: ${err.message}`
-            );
-            throw new Error(
-                `${this.dbName}: Error disconnecting from database: ${err.message}`
-            );
-        }
+        this.logger.info(`${this.dbName}: Disconnecting from database ...`);
+        await mongoose.connection.close();
+        this.logger.info(`${this.dbName}: Disconnected from database`);
     }
 
     /**
@@ -59,52 +41,29 @@ class MongoDatabase extends BaseDatabase {
      * @returns {Promise<*>} - The created document
      */
     async create(data, schema) {
-        try {
-            this.logger.info(
-                `${this.dbName}: Creating document in ${schema.schemaName}`
-            );
-            const document = await schema.create(data);
-            this.logger.info(
-                `${this.dbName}: Document created with id: ${document.id} and content: ${document.content}`
-            );
-            return document;
-        } catch (err) {
-            this.logger.error(
-                `${this.dbName}: Error creating document: ${err.message}`
-            );
-            throw new Error(
-                `${this.dbName}: Error creating document: ${err.message}`
-            );
-        }
+        this.logger.info(
+            `${this.dbName}: Creating document in ${schema.schemaName}`
+        );
+        const document = await schema.create(data);
+        this.logger.info(
+            `${this.dbName}: Document created with id: ${document.id} and content: ${document.content}`
+        );
+        return document;
     }
 
     /**
      * Find a document by ID in the MongoDB database.
      * @param {String} id - The ID of the document to be found
      * @param {Object} schema - The schema to be used for finding the data
-     * @returns {Promise<Object|*>} - The found document or null if not found
+     * @returns {Promise<Object|*>} - The found document
      */
     async findById(id, schema) {
-        try {
-            this.logger.info(`${this.dbName}: Finding document by id: ${id}`);
-            const document = await schema.getById(id);
-            if (!document) {
-                throw new Error(
-                    `${this.dbName}: Document not found with id: ${id}`
-                );
-            }
-            this.logger.info(
-                `${this.dbName}: Document with id ${document.id} and content ${document.content} found`
-            );
-            return document;
-        } catch (err) {
-            this.logger.error(
-                `${this.dbName}: Error finding document by id: ${err.message}`
-            );
-            throw new Error(
-                `${this.dbName}: Error finding document by id: ${err.message}`
-            );
-        }
+        this.logger.info(`${this.dbName}: Finding document by id: ${id}`);
+        const document = await schema.getById(id);
+        this.logger.info(
+            `${this.dbName}: Document with id ${document.id} and content ${document.content} found`
+        );
+        return document;
     }
 
     /**
@@ -113,21 +72,12 @@ class MongoDatabase extends BaseDatabase {
      * @returns {Promise<*>} - The found documents
      */
     async findAll(schema) {
-        try {
-            this.logger.info(
-                `${this.dbName}: Finding all documents in ${schema.schemaName}`
-            );
-            const documents = await schema.getAll();
-            this.logger.info(`${this.dbName}: Documents found`);
-            return documents;
-        } catch (err) {
-            this.logger.error(
-                `${this.dbName}: Error finding all documents: ${err.message}`
-            );
-            throw new Error(
-                `${this.dbName}: Error finding all documents: ${err.message}`
-            );
-        }
+        this.logger.info(
+            `${this.dbName}: Finding all documents in ${schema.schemaName}`
+        );
+        const documents = await schema.getAll();
+        this.logger.info(`${this.dbName}: Documents found`);
+        return documents;
     }
 
     /**
@@ -138,34 +88,17 @@ class MongoDatabase extends BaseDatabase {
      * @returns {Promise<*>} - The updated document
      */
     async update(id, data, schema) {
-        try {
-            this.logger.info(
-                `${this.dbName}: Updating document with id: ${id} to ${data.content}`
-            );
-            const document = await schema.update(id, data, {
-                new: true,
-                runValidators: true,
-            });
-            if (!document) {
-                this.logger.error(
-                    `${this.dbName}: Document with id ${id} not found`
-                );
-                throw new Error(
-                    `${this.dbName}: Document not found with id: ${id}`
-                );
-            }
-            this.logger.info(
-                `${this.dbName}: Document with id ${document.id} content updated to: ${document.content}`
-            );
-            return document;
-        } catch (err) {
-            this.logger.error(
-                `${this.dbName}: Error updating document: ${err.message}`
-            );
-            throw new Error(
-                `${this.dbName}: Error updating document: ${err.message}`
-            );
-        }
+        this.logger.info(
+            `${this.dbName}: Updating document with id: ${id} to ${data.content}`
+        );
+        const document = await schema.update(id, data, {
+            new: true,
+            runValidators: true,
+        });
+        this.logger.info(
+            `${this.dbName}: Document with id ${document.id} content updated to: ${document.content}`
+        );
+        return document;
     }
 
     /**
@@ -175,28 +108,12 @@ class MongoDatabase extends BaseDatabase {
      * @returns {Promise<*>} - The deleted document
      */
     async delete(id, schema) {
-        try {
-            this.logger.info(
-                `${this.dbName}: Deleting document with id: ${id}`
-            );
-            const document = await schema.delete(id);
-            if (!document) {
-                throw new Error(
-                    `${this.dbName}: Document not found with id: ${id}`
-                );
-            }
-            this.logger.info(
-                `${this.dbName}: Document with content ${document.content} deleted`
-            );
-            return document;
-        } catch (err) {
-            this.logger.error(
-                `${this.dbName}: Error deleting document: ${err.message}`
-            );
-            throw new Error(
-                `${this.dbName}: Error deleting document: ${err.message}`
-            );
-        }
+        this.logger.info(`${this.dbName}: Deleting document with id: ${id}`);
+        const document = await schema.delete(id);
+        this.logger.info(
+            `${this.dbName}: Document with content ${document.content} deleted`
+        );
+        return document;
     }
 }
 

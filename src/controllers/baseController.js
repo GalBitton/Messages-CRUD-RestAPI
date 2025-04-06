@@ -146,7 +146,7 @@ class BaseController {
             });
         } catch (err) {
             this.logger.error(
-                `${this.controllerName} error updating record with ID: ${req.params.id}: ${err}`
+                `${this.controllerName}: error updating record with ID: ${req.params.id}: ${err}`
             );
             res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
                 message: 'Internal Server Error',

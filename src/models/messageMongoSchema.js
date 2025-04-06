@@ -58,9 +58,6 @@ class MessageMongoSchema extends BaseSchema {
         );
         const doc = await this.model.create(data);
         if (!doc) {
-            this.logger.error(
-                `${this.schemaName}: Failed to create message with id ${data.id}`
-            );
             throw new Error(`${this.schemaName}: Failed to create message`);
         }
         this.logger.info(
@@ -78,9 +75,6 @@ class MessageMongoSchema extends BaseSchema {
         this.logger.info(`${this.schemaName}: Finding message with id ${id}`);
         const doc = await this.model.findOne({ id: id });
         if (!doc) {
-            this.logger.error(
-                `${this.schemaName}: Message with id ${id} not found`
-            );
             throw new Error(
                 `${this.schemaName}: Message with id ${id} not found`
             );
@@ -99,7 +93,6 @@ class MessageMongoSchema extends BaseSchema {
         this.logger.info(`${this.schemaName}: Finding all messages`);
         const docs = await this.model.find();
         if (!docs || docs.length === 0) {
-            this.logger.error(`${this.schemaName}: No messages found`);
             throw new Error(`${this.schemaName}: No messages found`);
         }
         this.logger.info(`${this.schemaName}: Messages found successfully`);
@@ -125,15 +118,13 @@ class MessageMongoSchema extends BaseSchema {
         this.logger.info(
             `${this.schemaName}: Updating message with id ${id} in MongoDB with new content ${data.content}`
         );
+
         // Update the message in the database
         const doc = await this.model.findOneAndUpdate({ id: id }, updatedData, {
             new: true,
             runValidators: true,
         });
         if (!doc) {
-            this.logger.error(
-                `${this.schemaName}: Message with id ${id} not found`
-            );
             throw new Error(
                 `${this.schemaName}: Message with id ${id} not found`
             );
@@ -153,9 +144,6 @@ class MessageMongoSchema extends BaseSchema {
         this.logger.info(`${this.schemaName}: Deleting message with id ${id}`);
         const doc = await this.model.findOneAndDelete({ id: id });
         if (!doc) {
-            this.logger.error(
-                `${this.schemaName}: Message with id ${id} not found`
-            );
             throw new Error(
                 `${this.schemaName}: Message with id ${id} not found`
             );
