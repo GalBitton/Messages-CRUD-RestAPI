@@ -36,7 +36,7 @@ class BaseController {
                 `${this.controllerName}: error getting all records: ${err}`
             );
             res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-                message: 'Internal Server Error',
+                message: 'Failed to get all records',
             });
         }
     };
@@ -50,21 +50,21 @@ class BaseController {
     getOne = async (req, res) => {
         try {
             this.logger.info(
-                `${this.controllerName}: trying to get record with ID: ${req.params.id}`
+                `${this.controllerName}: trying to get record with id: ${req.params.id}`
             );
             const data = await this.service.findById(req.params.id);
             this.logger.info(
-                `${this.controllerName}: got record with ID: ${req.params.id} successfully`
+                `${this.controllerName}: got record with id: ${req.params.id} successfully`
             );
             res.status(httpStatus.OK).json({
                 data,
             });
         } catch (err) {
             this.logger.error(
-                `${this.controllerName}: error getting record with ID: ${req.params.id}: ${err}`
+                `${this.controllerName}: error getting record with id: ${req.params.id}: ${err}`
             );
             res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-                message: 'Internal Server Error',
+                message: `Failed to get record with id: ${req.params.id}`,
             });
         }
     };
@@ -78,11 +78,11 @@ class BaseController {
     delete = async (req, res) => {
         try {
             this.logger.info(
-                `${this.controllerName}: trying to delete record with ID: ${req.params.id}`
+                `${this.controllerName}: trying to delete record with id: ${req.params.id}`
             );
             const deletedMessage = await this.service.delete(req.params.id);
             this.logger.info(
-                `${this.controllerName}: deleted record with ID: ${req.params.id} successfully`
+                `${this.controllerName}: deleted record with id: ${req.params.id} successfully`
             );
             res.status(httpStatus.OK).json({
                 deletedMessage,
@@ -90,10 +90,10 @@ class BaseController {
             });
         } catch (err) {
             this.logger.error(
-                `${this.controllerName}: error deleting record with ID: ${req.params.id}: ${err}`
+                `${this.controllerName}: error deleting record with id: ${req.params.id}: ${err}`
             );
             res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-                message: 'Internal Server Error',
+                message: `Failed to delete record with id : ${req.params.id}`,
             });
         }
     };
@@ -121,7 +121,7 @@ class BaseController {
                 `${this.controllerName}: error creating a new record: ${err}`
             );
             res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-                message: 'Internal Server Error',
+                message: `Error creating a new record with id : ${req.params.id} and content: ${req.body.content}`,
             });
         }
     };
@@ -135,21 +135,21 @@ class BaseController {
     update = async (req, res) => {
         try {
             this.logger.info(
-                `${this.controllerName}: trying to update record with ID: ${req.params.id}`
+                `${this.controllerName}: trying to update record with id: ${req.params.id}`
             );
             const data = await this.service.update(req.params.id, req.body);
             this.logger.info(
-                `${this.controllerName}: updated record with ID: ${req.params.id} to ${req.body.content} successfully`
+                `${this.controllerName}: updated record with id: ${req.params.id} to ${req.body.content} successfully`
             );
             res.status(httpStatus.OK).json({
                 data,
             });
         } catch (err) {
             this.logger.error(
-                `${this.controllerName}: error updating record with ID: ${req.params.id}: ${err}`
+                `${this.controllerName}: error updating record with id: ${req.params.id}: ${err}`
             );
             res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-                message: 'Internal Server Error',
+                message: `Failed to update record with id: ${req.params.id} to new content: ${req.body.content}`,
             });
         }
     };

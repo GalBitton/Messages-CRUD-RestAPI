@@ -39,7 +39,7 @@ class InMemoryDatabase extends BaseDatabase {
         );
         const document = await schema.create(data);
         this.logger.info(
-            `${this.dbName}: Record created successfully with ID: ${document.id}`
+            `${this.dbName}: Record created successfully with id: ${document.id}`
         );
         return document;
     }
@@ -89,11 +89,11 @@ class InMemoryDatabase extends BaseDatabase {
      * @returns {Promise<*|null>} - The updated document or null if not found
      */
     async update(id, data, schema) {
-        this.logger.info(`${this.dbName}: Updating record with ID: ${id}`);
+        this.logger.info(`${this.dbName}: Updating record with id: ${id}`);
         const document = await schema.update(id, data);
         if (!document) {
             this.logger.error(
-                `${this.dbName}: Record with ID: ${id} not found`
+                `${this.dbName}: Record with id: ${id} not found`
             );
             return null;
         }
