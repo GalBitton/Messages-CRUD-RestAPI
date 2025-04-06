@@ -1,11 +1,19 @@
+// mongoDatabase.js
 const BaseDatabase = require('../interfaces/baseDatabase');
 const mongoose = require('mongoose');
 
+/**
+ * MongoDatabase class extends the BaseDatabase to handle CRUD operations for MongoDB.
+ * Wrapper class for Mongoose, providing a consistent interface for database operations.
+ */
 class MongoDatabase extends BaseDatabase {
     constructor(config, logger) {
         super(config, logger);
     }
 
+    /**
+     * Connect to the MongoDB database.
+     */
     async connect() {
         try {
             this.logger.info('Connecting to MongoDB...');
@@ -22,6 +30,9 @@ class MongoDatabase extends BaseDatabase {
         }
     }
 
+    /**
+     * Disconnect from the MongoDB database.
+     */
     async disconnect() {
         try {
             this.logger.info('Disconnecting from MongoDB...');
@@ -35,6 +46,12 @@ class MongoDatabase extends BaseDatabase {
         }
     }
 
+    /**
+     * Create a new document in the MongoDB database.
+     * @param {Object} data - The data to be created in the database
+     * @param {Object} schema - The schema to be used for creating the data
+     * @returns {Promise<*>} - The created document
+     */
     async create(data, schema) {
         try {
             this.logger.info(`Creating document in ${schema.schemaName}`);
@@ -47,6 +64,12 @@ class MongoDatabase extends BaseDatabase {
         }
     }
 
+    /**
+     * Find a document by ID in the MongoDB database.
+     * @param {String} id - The ID of the document to be found
+     * @param {Object} schema - The schema to be used for finding the data
+     * @returns {Promise<Object|*>} - The found document or null if not found
+     */
     async findById(id, schema) {
         try {
             this.logger.info(`Finding document by id: ${id}`);
@@ -64,6 +87,11 @@ class MongoDatabase extends BaseDatabase {
         }
     }
 
+    /**
+     * Find all documents in the MongoDB database.
+     * @param {Object} schema - The schema to be used for finding the data
+     * @returns {Promise<*>} - The found documents
+     */
     async findAll(schema) {
         try {
             this.logger.info(`Finding all documents in ${schema.schemaName}`);
@@ -76,6 +104,13 @@ class MongoDatabase extends BaseDatabase {
         }
     }
 
+    /**
+     * Update a document in the MongoDB database.
+     * @param {String} id - The ID of the document to be updated
+     * @param {Object} data - The data to be updated
+     * @param {Object} schema - The schema to be used for updating the data
+     * @returns {Promise<*>} - The updated document
+     */
     async update(id, data, schema) {
         try {
             this.logger.info(`Updating document with id: ${id}`);
@@ -96,6 +131,12 @@ class MongoDatabase extends BaseDatabase {
         }
     }
 
+    /**
+     * Delete a document in the MongoDB database.
+     * @param {String} id - The ID of the document to be deleted
+     * @param {Object} schema - The schema to be used for deleting the data
+     * @returns {Promise<*>} - The deleted document
+     */
     async delete(id, schema) {
         try {
             this.logger.info(`Deleting document with id: ${id}`);

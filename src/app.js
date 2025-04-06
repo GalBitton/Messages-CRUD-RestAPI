@@ -12,28 +12,29 @@ const httpStatusCode = require('http-status-codes');
 const messageRoutes = require('./routes/messageRoutes');
 const logger = container.get('logger');
 
-// Security middleware
+// Enable helmet for security - helps secure Express apps by setting various HTTP headers
 app.use(
     helmet({
         contentSecurityPolicy: false, // Add this to allow Swagger UI to work
     })
 );
-app.use(cors());
+app.use(cors()); // Enable CORS for all routes - in order to allow cross-origin requests
 
-// Request parsing
+// Enable JSON parsing for incoming requests
 app.use(express.json());
 
-// Logging
+// Enable URL-encoded data parsing
 app.use(
     morgan('combined', {
+        // Use combined format for logging
         stream: { write: message => logger.info(message.trim()) },
     })
 );
 
-// Swagger documentation
+// Add Swagger UI for API documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Health check
+// Defining a health check route
 app.get('/health', (req, res) => {
     res.status(httpStatusCode.OK).json({ message: 'OK' });
 });
@@ -46,7 +47,7 @@ app.get('/', (req, res) => {
 // API routes
 app.use('/api/v1/messages', messageRoutes);
 
-// 404 handler
+// Defining a 404 error handler for unknown routes
 app.use((req, res) => {
     res.status(404).json({
         error: 'Resource not found',

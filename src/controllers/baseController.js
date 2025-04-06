@@ -1,9 +1,22 @@
+// baseController.js
+
 const httpStatus = require('http-status-codes');
+
+/*
+ * BaseController class provides generic common CRUD operations for any resource.
+ * This class uses a service layer to interact with the database.
+ */
 class BaseController {
     constructor(service) {
         this.service = service;
     }
 
+    /**
+     * Get all records from the database using the service layer - READ operation
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     * @returns {Promise<void>}
+     */
     getAll = async (req, res) => {
         try {
             const data = await this.service.findAll();
@@ -17,6 +30,12 @@ class BaseController {
         }
     };
 
+    /**
+     * Get a single record by ID from the database using the service layer - READ operation
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     * @returns {Promise<void>}
+     */
     getOne = async (req, res) => {
         try {
             const data = await this.service.findById(req.params.id);
@@ -30,6 +49,12 @@ class BaseController {
         }
     };
 
+    /**
+     * Delete a record by ID from the database using the service layer - DELETE operation
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     * @returns {Promise<void>}
+     */
     delete = async (req, res) => {
         try {
             const deletedMessage = await this.service.delete(req.params.id);
@@ -44,6 +69,12 @@ class BaseController {
         }
     };
 
+    /**
+     * Create a new record in the database using the service layer - CREATE operation
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     * @returns {Promise<void>}
+     */
     create = async (req, res) => {
         try {
             const data = await this.service.create(req.body);
@@ -57,6 +88,12 @@ class BaseController {
         }
     };
 
+    /**
+     * Update a record by ID and Content in the database using the service layer - UPDATE operation
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     * @returns {Promise<void>}
+     */
     update = async (req, res) => {
         try {
             const data = await this.service.update(req.params.id, req.body);

@@ -1,9 +1,12 @@
-function isPalindrome(str) {
-    // Remove all non-alphanumeric characters by replacing them with an empty string
-    // Convert the string to lowercase
-    const cleanedStr = str.toLowerCase().replace(/[^a-z0-9]/g, '');
+// palindromeChecker.js
 
-    // Palindrome check - compare the cleaned string with its reverse string
+/**
+ * Checks if a given string is a palindrome, ignoring case and non-alphanumeric characters.
+ * @param {String }str - The string to be checked.
+ * @returns {boolean} - True if the string is a palindrome, false otherwise.
+ */
+function isPalindrome(str) {
+    const cleanedStr = str.toLowerCase().replace(/[^a-z0-9]/g, '');
     return cleanedStr === cleanedStr.split('').reverse().join('');
 }
 

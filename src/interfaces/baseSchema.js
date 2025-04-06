@@ -1,3 +1,10 @@
+// baseSchema.js
+
+/*
+ * BaseSchema Abstract class
+ * This class defines the interface for interacting with specific database schemas for CRUD operations.
+ * It should be extended by any concrete database schema, modularizing the code.
+ */
 class BaseSchema {
     constructor(schemaName) {
         this.schemaName = schemaName;

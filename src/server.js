@@ -1,16 +1,11 @@
+// server.js
+
 const app = require('./app');
 const container = require('./container');
 
 const logger = container.get('logger');
 const config = container.get('config');
 const database = container.get('database');
-
-// Handle unexpected exceptions
-process.on('uncaughtException', err => {
-    logger.error('Uncaught Exception!!! Server is going down');
-    logger.error(err.name, err.message);
-    process.exit(1);
-});
 
 // Connect to database and start the server
 (async () => {
@@ -27,11 +22,22 @@ process.on('uncaughtException', err => {
             );
         });
 
+        // Handle unexpected exceptions
+        process.on('uncaughtException', err => {
+            logger.error('Uncaught Exception!!! Server is going down');
+            logger.error(err.name, err.message);
+            server.close(async () => {
+                await database.disconnect();
+                process.exit(1);
+            });
+        });
+
         // Handle unhandled rejections
         process.on('unhandledRejection', err => {
             logger.error('Unhandled Rejection!!! Shutting down...');
             logger.error(err.name, err.message);
-            server.close(() => {
+            server.close(async () => {
+                await database.disconnect();
                 process.exit(1);
             });
         });
@@ -39,7 +45,8 @@ process.on('uncaughtException', err => {
         // Handle SIGTERM signal
         process.on('SIGTERM', () => {
             logger.info('SIGTERM signal received: closing HTTP server');
-            server.close(() => {
+            server.close(async () => {
+                await database.disconnect();
                 logger.info('HTTP server closed, Server terminated...');
             });
         });

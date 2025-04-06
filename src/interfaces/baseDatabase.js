@@ -1,8 +1,9 @@
+// baseDatabase.js
+
 /*
- * BaseDatabase Interface
- * This interface defines the basic structure for CRUD operations
- * that any database class should implement
- * will be used as a base class for other database classes (InMemory, MongoDB)
+ * BaseDatabase Abstract class
+ * This class defines the interface for all database CRUD operations.
+ * It should be extended by any concrete database implementation, modularizing the code.
  */
 class BaseDatabase {
     constructor(config, logger) {
